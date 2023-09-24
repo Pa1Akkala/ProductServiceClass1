@@ -1,5 +1,6 @@
 package dev.pavan.productservice.controllers;
 
+import dev.pavan.productservice.dtos.FakeStoreProductDto;
 import dev.pavan.productservice.dtos.GenericProductDto;
 import dev.pavan.productservice.exceptions.NotFoundException;
 import dev.pavan.productservice.services.ProductService;
@@ -63,7 +64,10 @@ public class ProductController {
     }
 
     @PutMapping("{id}")
-    public void updateProductById() {
-
+    public ResponseEntity<GenericProductDto> updateProductById(@PathVariable("id") Long id ,@RequestBody GenericProductDto product ) {
+        return new ResponseEntity<>(
+                productService.updateProduct(id,product),
+                HttpStatus.OK
+                );
     }
 }
