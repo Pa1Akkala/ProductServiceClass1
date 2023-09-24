@@ -1,10 +1,14 @@
 package dev.pavan.productservice.controllers;
 
 import dev.pavan.productservice.dtos.GenericProductDto;
+import dev.pavan.productservice.exceptions.NotFoundException;
 import dev.pavan.productservice.services.ProductService;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -13,6 +17,10 @@ public class ProductController {
     //    @Autowired
     // field injection
     private ProductService productService;
+    // ....;
+    // ...;
+
+
 
     // constructor injection
 //    @Autowired
@@ -27,26 +35,31 @@ public class ProductController {
 //        this.productService = productService;
 //    }
 
+    // GET /products {}
     @GetMapping
-    public void getAllProducts() {
-
+    public List<GenericProductDto> getAllProducts() {
+        return productService.getAllProducts();
     }
 
     // localhost:8080/products/{id}
     // localhost:8080/products/123
     @GetMapping("{id}")
-    public GenericProductDto getProductById(@PathVariable("id") Long id) {
+    public GenericProductDto getProductById(@PathVariable("id") Long id) throws NotFoundException {
         return productService.getProductById(id);
     }
 
     @DeleteMapping("{id}")
-    public void deleteProductById() {
-
+    public ResponseEntity<GenericProductDto> deleteProductById(@PathVariable("id") Long id) {
+        return new ResponseEntity<>(
+                productService.deleteProduct(id),
+                HttpStatus.OK
+        );
     }
 
     @PostMapping
-    public String createProduct() {
-        return "Created new product with id : " + UUID.randomUUID();
+    public GenericProductDto createProduct(@RequestBody GenericProductDto product) {
+//        System.out.println(product.name);
+        return productService.createProduct(product);
     }
 
     @PutMapping("{id}")
