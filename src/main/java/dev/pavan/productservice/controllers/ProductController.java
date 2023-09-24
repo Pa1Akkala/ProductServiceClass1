@@ -1,6 +1,5 @@
 package dev.pavan.productservice.controllers;
 
-import dev.pavan.productservice.dtos.FakeStoreProductDto;
 import dev.pavan.productservice.dtos.GenericProductDto;
 import dev.pavan.productservice.exceptions.NotFoundException;
 import dev.pavan.productservice.services.ProductService;
@@ -10,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/products")
@@ -63,11 +61,7 @@ public class ProductController {
         return productService.createProduct(product);
     }
 
-    @PutMapping("{id}")
-    public ResponseEntity<GenericProductDto> updateProductById(@PathVariable("id") Long id ,@RequestBody GenericProductDto product ) {
-        return new ResponseEntity<>(
-                productService.updateProduct(id,product),
-                HttpStatus.OK
-                );
-    }
+
+
+
 }

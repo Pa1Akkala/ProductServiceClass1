@@ -14,7 +14,7 @@ public interface ProductService {
 
     GenericProductDto deleteProduct(Long id);
 
-    GenericProductDto updateProduct(Long id,GenericProductDto product);
+   // GenericProductDto updateProduct(Long id,GenericProductDto product);
 
-  //  GenericProductDto
+
 }
