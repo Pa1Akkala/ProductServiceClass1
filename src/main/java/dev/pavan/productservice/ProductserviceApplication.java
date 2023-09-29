@@ -3,6 +3,7 @@ package dev.pavan.productservice;
 import dev.pavan.productservice.inheritancemappings.joinedtable.MentorRepository;
 import dev.pavan.productservice.inheritancemappings.joinedtable.UserRepository;
 import dev.pavan.productservice.models.Category;
+import dev.pavan.productservice.models.Price;
 import dev.pavan.productservice.models.Product;
 import dev.pavan.productservice.repositories.CategoryRepository;
 import dev.pavan.productservice.repositories.ProductRepository;
@@ -59,19 +60,26 @@ public class ProductserviceApplication implements CommandLineRunner {
 
 		Category category = new Category();
 		category.setName("Apple Devices");
-		Category savedCategory = categoryRepository.save(category);
+	//	Category savedCategory = categoryRepository.save(category);
+
+		Price price = new Price();
+	//  Price savedPrice = priceRepository.save(price);
+
 
 		Product product = new Product();
 		product.setTitle("iPhone 15 Pro");
 		product.setDescription("The best iPhone Ever");
-		product.setCategory(savedCategory);
+		product.setCategory(category);
+		product.setPrice(price);
 
 		productRepository.save(product);
 
-		Category category1 = categoryRepository.findById(UUID.fromString("1059c662-cca5-4f3e-b608-b3b263eef744")).get();
-		System.out.println("Category name is: " + category1.getName());
-		System.out.println("Printing all products in the category");
-		Thread.sleep(1000);
+	//	productRepository.deleteById(UUID.fromString("1059c662-cca5-4f3e-b608-b3b263eef744"));
+
+//		Category category1 = categoryRepository.findById(UUID.fromString("1059c662-cca5-4f3e-b608-b3b263eef744")).get();
+//		System.out.println("Category name is: " + category1.getName());
+//		System.out.println("Printing all products in the category");
+//		Thread.sleep(1000);
 //
 //        category1.getProducts().forEach(
 //                product1 -> System.out.println(product1.getTitle())
