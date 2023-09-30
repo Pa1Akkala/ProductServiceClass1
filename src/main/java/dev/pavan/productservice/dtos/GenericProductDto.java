@@ -1,5 +1,6 @@
 package dev.pavan.productservice.dtos;
 
+import dev.pavan.productservice.models.Price;
 import lombok.Getter;
 import lombok.Setter;
 

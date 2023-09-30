@@ -3,9 +3,11 @@ package dev.pavan.productservice.controllers;
 import dev.pavan.productservice.dtos.GenericProductDto;
 import dev.pavan.productservice.exceptions.NotFoundException;
 import dev.pavan.productservice.services.ProductService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,10 +22,9 @@ public class ProductController {
     // ...;
 
 
-
     // constructor injection
-//    @Autowired
-    public ProductController(@Qualifier("fakeStoreProductService") ProductService productService) {
+
+    public ProductController(@Qualifier("selfProductServiceImpl") ProductService productService) {
         this.productService = productService;
     }
 //
@@ -61,7 +62,13 @@ public class ProductController {
         return productService.createProduct(product);
     }
 
+    @PutMapping("{id}")
+    public GenericProductDto updateProduct(@PathVariable("id") Long id, @RequestBody GenericProductDto product) {
+        return productService.updateProduct(id, product);
+    }
 
-
-
+    @GetMapping("/category/{id}")
+    public List<GenericProductDto> getAllProductsByCategory(@PathVariable("id") Long id) {
+        return productService.getAllProductsByCategory(id);
+    }
 }

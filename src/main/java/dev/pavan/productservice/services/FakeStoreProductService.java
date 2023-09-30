@@ -17,8 +17,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.ArrayList;
 import java.util.List;
 
-@Primary
-@Repository("fakeStoreProductService")
+@Service("fakeStoreProductService")
 public class FakeStoreProductService implements ProductService{
 
     private FakeStoreProductServiceClient fakeStoreProductServiceClient;
@@ -64,6 +63,16 @@ public class FakeStoreProductService implements ProductService{
     @Override
     public GenericProductDto deleteProduct(Long id) {
         return convertFakeStoreProductIntoGenericProduct(fakeStoreProductServiceClient.deleteProduct(id));
+    }
+
+    @Override
+    public GenericProductDto updateProduct(Long id, GenericProductDto product) {
+        return null;
+    }
+
+    @Override
+    public List<GenericProductDto> getAllProductsByCategory(Long id) {
+        return null;
     }
 
 
