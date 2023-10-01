@@ -2,6 +2,7 @@ package dev.pavan.productservice.repositories;
 
 
 import dev.pavan.productservice.dtos.GenericProductDto;
+import dev.pavan.productservice.models.Category;
 import dev.pavan.productservice.models.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -22,4 +23,7 @@ extends JpaRepository<Product, UUID> {
      List<Product> findAll();
 
      List<Product> findAllByCategoryUuid(UUID uuid);
+
+     List<Product> findAllByCategoryIn(List<Category> categories);
+
 }

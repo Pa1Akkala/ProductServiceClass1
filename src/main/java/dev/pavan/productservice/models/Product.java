@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 @Getter
 @Setter
@@ -20,10 +22,13 @@ public class Product extends BaseModel{
     // => R to L: m : 1
     // => Ans:    m : 1
     @ManyToOne(cascade = {CascadeType.PERSIST})
+    //@Fetch(FetchMode.SUBSELECT)
     @JoinColumn(name = "category")
     private Category category;
 
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+            //fetch = FetchType.LAZY)
+//    @Fetch(FetchMode.JOIN)
     private Price price;
 //    private double price;
 }
