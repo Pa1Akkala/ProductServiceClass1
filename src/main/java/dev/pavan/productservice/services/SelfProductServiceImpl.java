@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 
 @Service("selfProductServiceImpl")
@@ -28,8 +29,8 @@ public class SelfProductServiceImpl implements ProductService{
 
 
     @Override
-    public GenericProductDto getProductById(Long id) throws NotFoundException {
-        Optional<Product> productOptional=productRepository.findById(id);
+    public GenericProductDto getProductById(String uuid) throws NotFoundException {
+        Optional<Product> productOptional=productRepository.findByUuid(UUID.fromString(uuid));
         if(productOptional.isEmpty()){
             throw new NotFoundException("Product not found");
         }
@@ -42,8 +43,11 @@ public class SelfProductServiceImpl implements ProductService{
 
     @Override
     public GenericProductDto createProduct(GenericProductDto product) {
-        Product product1 = new Product();
-        productRepository.save(convertGenericProductIntoProduct(product));
+        Product savedProduct=productRepository.save(convertGenericProductIntoProduct(product));
+
+        //After saving the product, we need to set the id of the product in the genericProductDto.
+        // Then only we can see the id in the response.
+        product.setUuid(savedProduct.getUuid().toString());
         return product;
     }
 
@@ -58,41 +62,56 @@ public class SelfProductServiceImpl implements ProductService{
     }
 
     @Override
-    public GenericProductDto deleteProduct(Long id) {
-        Optional<Product> productOptional=productRepository.findById(id);
+    public GenericProductDto deleteProduct(String uuid) throws NotFoundException {
+        Optional<Product> productOptional=productRepository.findByUuid(UUID.fromString(uuid));
         if(productOptional.isPresent()){
             Product product=productOptional.get();
             productRepository.delete(product);
             return convertProductIntoGenericProduct(product);
         }
         else{
-            return null;
+            throw new NotFoundException("Product not found");
         }
     }
 
     @Override
-    public GenericProductDto updateProduct(Long id,GenericProductDto product) {
+    public GenericProductDto updateProduct(String uuid,GenericProductDto product) {
 
-        Optional<Product> productOptional=productRepository.findById(id);
+        Optional<Product> productOptional=productRepository.findByUuid(UUID.fromString(uuid));
 
         if(productOptional.isPresent()){
-            Product product1=productOptional.get();
-            convertGenericProductIntoProduct(product);
-            productRepository.save(product1);
+            Product exisProduct=productOptional.get();
+            exisProduct.setImage(product.getImage());
+            exisProduct.setDescription(product.getDescription());
+            exisProduct.setTitle(product.getTitle());
+
+            //Setting the price
+            Price price=new Price();
+            price.setPrice(product.getPrice());
+            exisProduct.setPrice(price);
+
+            //Setting the Category
+            Category category=new Category();
+            category.setName(product.getCategory());
+            exisProduct.setCategory(category);
+
+            Product savedProduct=productRepository.save(exisProduct);
+
+            return convertProductIntoGenericProduct(savedProduct);
         }
         else{
-            Product product1=new Product();
-            convertGenericProductIntoProduct(product);
-            productRepository.save(product1);
+            Product savedProduct = productRepository.save(convertGenericProductIntoProduct(product));
+            product.setUuid(savedProduct.getUuid().toString());
         }
 
         return product;
 
+
     }
 
     @Override
-    public List<GenericProductDto> getAllProductsByCategory(Long id) {
-        List<Product> products=productRepository.findAllByCategory_Id(id);
+    public List<GenericProductDto> getAllProductsByCategory(String uuid) {
+        List<Product> products=productRepository.findAllByCategoryUuid(UUID.fromString(uuid));
         List<GenericProductDto> genericProductDtos=new ArrayList<>();
         for(Product product:products){
             genericProductDtos.add(convertProductIntoGenericProduct(product));
@@ -102,7 +121,7 @@ public class SelfProductServiceImpl implements ProductService{
 
     GenericProductDto convertProductIntoGenericProduct(Product product){
         GenericProductDto genericProductDto=new GenericProductDto();
-        genericProductDto.setId(product.getId());
+        genericProductDto.setUuid(product.getUuid().toString());
         genericProductDto.setImage(product.getImage());
         genericProductDto.setDescription(product.getDescription());
         genericProductDto.setTitle(product.getTitle());
@@ -116,8 +135,18 @@ public class SelfProductServiceImpl implements ProductService{
         product.setImage(genericProductDto.getImage());
         product.setDescription(genericProductDto.getDescription());
         product.setTitle(genericProductDto.getTitle());
-        product.getPrice().setPrice(genericProductDto.getPrice());
-        product.getCategory().setName(genericProductDto.getCategory());
+
+        //Setting the price
+        Price price=new Price();
+        price.setPrice(genericProductDto.getPrice());
+        product.setPrice(price);
+
+        //Setting the Category
+        Category category=new Category();
+        category.setName(genericProductDto.getCategory());
+        product.setCategory(category);
+
+
         return product;
     }
 

@@ -43,17 +43,14 @@ public class ProductController {
 
     // localhost:8080/products/{id}
     // localhost:8080/products/123
-    @GetMapping("{id}")
-    public GenericProductDto getProductById(@PathVariable("id") Long id) throws NotFoundException {
-        return productService.getProductById(id);
+    @GetMapping("{uuid}")
+    public GenericProductDto getProductById(@PathVariable("uuid") String uuid) throws NotFoundException {
+        return productService.getProductById(uuid);
     }
 
-    @DeleteMapping("{id}")
-    public ResponseEntity<GenericProductDto> deleteProductById(@PathVariable("id") Long id) {
-        return new ResponseEntity<>(
-                productService.deleteProduct(id),
-                HttpStatus.OK
-        );
+    @DeleteMapping("{uuid}")
+    public GenericProductDto deleteProductById(@PathVariable("uuid") String uuid) throws NotFoundException {
+        return productService.deleteProduct(uuid);
     }
 
     @PostMapping
@@ -62,13 +59,13 @@ public class ProductController {
         return productService.createProduct(product);
     }
 
-    @PutMapping("{id}")
-    public GenericProductDto updateProduct(@PathVariable("id") Long id, @RequestBody GenericProductDto product) {
-        return productService.updateProduct(id, product);
+    @PutMapping("{uuid}")
+    public GenericProductDto updateProduct(@PathVariable("uuid") String uuid, @RequestBody GenericProductDto product) {
+        return productService.updateProduct(uuid, product);
     }
 
-    @GetMapping("/category/{id}")
-    public List<GenericProductDto> getAllProductsByCategory(@PathVariable("id") Long id) {
-        return productService.getAllProductsByCategory(id);
+    @GetMapping("/category/{uuid}")
+    public List<GenericProductDto> getAllProductsByCategory(@PathVariable("uuid") String uuid) {
+        return productService.getAllProductsByCategory(uuid);
     }
 }

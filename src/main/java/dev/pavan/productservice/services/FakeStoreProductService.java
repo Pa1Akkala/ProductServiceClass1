@@ -25,7 +25,7 @@ public class FakeStoreProductService implements ProductService{
     private GenericProductDto convertFakeStoreProductIntoGenericProduct(FakeStoreProductDto fakeStoreProductDto) {
 
         GenericProductDto product = new GenericProductDto();
-        product.setId(fakeStoreProductDto.getId());
+        product.setUuid(fakeStoreProductDto.getUuid().toString());
         product.setImage(fakeStoreProductDto.getImage());
         product.setDescription(fakeStoreProductDto.getDescription());
         product.setTitle(fakeStoreProductDto.getTitle());
@@ -46,8 +46,8 @@ public class FakeStoreProductService implements ProductService{
     }
 
     @Override
-    public GenericProductDto getProductById(Long id) throws NotFoundException {
-        return convertFakeStoreProductIntoGenericProduct(fakeStoreProductServiceClient.getProductById(id));
+    public GenericProductDto getProductById(String uuid) throws NotFoundException {
+        return convertFakeStoreProductIntoGenericProduct(fakeStoreProductServiceClient.getProductById(uuid));
     }
 
     @Override
@@ -61,17 +61,17 @@ public class FakeStoreProductService implements ProductService{
     }
 
     @Override
-    public GenericProductDto deleteProduct(Long id) {
-        return convertFakeStoreProductIntoGenericProduct(fakeStoreProductServiceClient.deleteProduct(id));
+    public GenericProductDto deleteProduct(String uuid) {
+        return convertFakeStoreProductIntoGenericProduct(fakeStoreProductServiceClient.deleteProduct(uuid));
     }
 
     @Override
-    public GenericProductDto updateProduct(Long id, GenericProductDto product) {
+    public GenericProductDto updateProduct(String uuid, GenericProductDto product) {
         return null;
     }
 
     @Override
-    public List<GenericProductDto> getAllProductsByCategory(Long id) {
+    public List<GenericProductDto> getAllProductsByCategory(String uuid) {
         return null;
     }
 

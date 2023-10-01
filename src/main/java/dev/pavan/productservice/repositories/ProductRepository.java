@@ -12,15 +12,14 @@ import java.util.UUID;
 
 @Repository
 public interface ProductRepository
-extends JpaRepository<Product, Long> {
+extends JpaRepository<Product, UUID> {
      @Override
      Product save(Product product);
 
-     @Override
-     Optional<Product> findById(Long id);
+     Optional<Product> findByUuid(UUID uuid);
 
      @Override
      List<Product> findAll();
 
-     List<Product> findAllByCategory_Id(Long id);
+     List<Product> findAllByCategoryUuid(UUID uuid);
 }

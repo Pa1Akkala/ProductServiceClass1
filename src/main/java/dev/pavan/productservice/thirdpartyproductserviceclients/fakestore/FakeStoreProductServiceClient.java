@@ -38,7 +38,7 @@ public class FakeStoreProductServiceClient {
                                          @Value("${fakestore.api.paths.product}") String fakeStoreProductsApiPath) {
         this.restTemplateBuilder = restTemplateBuilder;
         this.productRequestsBaseUrl  = fakeStoreApiUrl + fakeStoreProductsApiPath;
-        this.specificProductRequestUrl = fakeStoreApiUrl + fakeStoreProductsApiPath + "/{id}";
+        this.specificProductRequestUrl = fakeStoreApiUrl + fakeStoreProductsApiPath + "/{uuid}";
     }
 
 
@@ -51,16 +51,16 @@ public class FakeStoreProductServiceClient {
         return response.getBody();
     }
 
-    public FakeStoreProductDto getProductById(Long id) throws NotFoundException {
+    public FakeStoreProductDto getProductById(String uuid) throws NotFoundException {
 //        FakeStoreProductService fakeStoreProductService = new FakeStoreProductService();
         RestTemplate restTemplate = restTemplateBuilder.build();
         ResponseEntity<FakeStoreProductDto> response =
-                restTemplate.getForEntity(specificProductRequestUrl, FakeStoreProductDto.class, id);
+                restTemplate.getForEntity(specificProductRequestUrl, FakeStoreProductDto.class, uuid);
 
         FakeStoreProductDto fakeStoreProductDto = response.getBody();
 
         if (fakeStoreProductDto == null) {
-            throw new NotFoundException("Product with id: " + id + " doesn't exist.");
+            throw new NotFoundException("Product with uuid: " + uuid + " doesn't exist.");
         }
 
 //        response.getStatusCode()
@@ -80,7 +80,7 @@ public class FakeStoreProductServiceClient {
         return Arrays.stream(response.getBody()).toList();
     }
 
-    public FakeStoreProductDto deleteProduct(Long id) {
+    public FakeStoreProductDto deleteProduct(String uuid) {
         RestTemplate restTemplate = restTemplateBuilder.build();
 
 
@@ -88,7 +88,7 @@ public class FakeStoreProductServiceClient {
         ResponseExtractor<ResponseEntity<FakeStoreProductDto>> responseExtractor =
                 restTemplate.responseEntityExtractor(FakeStoreProductDto.class);
         ResponseEntity<FakeStoreProductDto> response = restTemplate.execute(specificProductRequestUrl, HttpMethod.DELETE,
-                requestCallback, responseExtractor, id);
+                requestCallback, responseExtractor, uuid);
 
         return response.getBody();
     }

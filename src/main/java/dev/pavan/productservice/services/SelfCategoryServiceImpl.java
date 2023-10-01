@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class SelfCategoryServiceImpl implements CategoryService{
@@ -23,7 +24,7 @@ public class SelfCategoryServiceImpl implements CategoryService{
         List<GenericCategoryDto> genericCategoryDtos=new ArrayList<>();
         for(Category category:categories){
             GenericCategoryDto genericCategoryDto=new GenericCategoryDto();
-            genericCategoryDto.setId(category.getId());
+            genericCategoryDto.setUuid(category.getUuid().toString());
             genericCategoryDto.setName(category.getName());
             genericCategoryDtos.add(genericCategoryDto);
         }
