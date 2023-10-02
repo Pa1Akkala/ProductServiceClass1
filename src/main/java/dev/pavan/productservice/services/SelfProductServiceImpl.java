@@ -86,14 +86,14 @@ public class SelfProductServiceImpl implements ProductService{
             exisProduct.setTitle(product.getTitle());
 
             //Setting the price
-            Price price=new Price();
-            price.setPrice(product.getPrice());
-            exisProduct.setPrice(price);
+            Price price=exisProduct.getPrice();   //Getting the price object from the existing product
+            price.setPrice(product.getPrice());   //Setting the price
+            exisProduct.setPrice(price);          //Setting the price object to the existing product
 
             //Setting the Category
-            Category category=new Category();
-            category.setName(product.getCategory());
-            exisProduct.setCategory(category);
+            Category category=exisProduct.getCategory();  //Getting the category object from the existing product
+            category.setName(product.getCategory());      //Setting the category
+            exisProduct.setCategory(category);            //Setting the category object to the existing product
 
             Product savedProduct=productRepository.save(exisProduct);
 
