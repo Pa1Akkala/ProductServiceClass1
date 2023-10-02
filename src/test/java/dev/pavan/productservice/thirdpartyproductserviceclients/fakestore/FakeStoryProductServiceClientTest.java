@@ -10,7 +10,7 @@ import org.springframework.web.client.RestTemplate;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-class FakeStoryProductServiceClientTest {
+class FakeStoreProductServiceClientTest {
     @Autowired
     private RestTemplateBuilder restTemplateBuilder;
 
